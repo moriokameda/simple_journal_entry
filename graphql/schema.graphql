@@ -3,6 +3,8 @@ schema {
   mutation: Mutation
 }
 
+scalar LocalDatetime
+
 "Directs the executor to include this field or fragment only when the `if` argument is true"
 directive @include(
     "Included when true."
@@ -51,16 +53,31 @@ type JournalEntry {
   value: Int!
 }
 
+type Comic {
+  id: ID!
+  name: String!
+  isPublished: Boolean!
+  createdAt: LocalDatetime!
+  updatedAt: LocalDatetime!
+}
+
+type DeleteComicPayload {
+  deletedComic: Comic
+}
+
 type Mutation {
   createAccount(input: CreateAccountInput!): Account!
   createJournal(input: CreateJournalInput!): Journal!
+  createComic(input: CreateComicInput!): Comic!
   deleteAccount(input: DeleteAccountInput!): DeleteAccountPayload!
+  deleteComic(input: DeleteComicInput!): DeleteComicPayload!
   updateAccount(input: UpdateAccountInput!): Account!
 }
 
 type Query {
   allAccounts: [Account!]!
   allJournals: [Journal!]!
+  allComics: [Comic!]!
 }
 
 enum AccountElementType {
@@ -92,7 +109,16 @@ input CreateJournalInput {
   incurredOn: Int!
 }
 
+input CreateComicInput {
+  name: String!,
+  isPublished: Boolean!,
+}
+
 input DeleteAccountInput {
+  id: ID!
+}
+
+input DeleteComicInput {
   id: ID!
 }
 
@@ -101,4 +127,10 @@ input UpdateAccountInput {
   elementType: AccountElementType!
   id: ID!
   name: String!
+}
+
+input UpdateComicInput {
+  id: ID!
+  name: String!
+  isPublished: Boolean!
 }
