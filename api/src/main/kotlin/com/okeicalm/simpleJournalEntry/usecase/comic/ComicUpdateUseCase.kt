@@ -18,10 +18,14 @@ class ComicUpdateUseCaseImpl(private val repository: ComicRepository) : ComicUpd
     override fun call(input: ComicUpdateUseCaseInput): ComicUpdateUseCaseOutPut {
         val comic = repository.findById(input.id) ?: throw RuntimeException("this id of comic is not found")
 
-        return ComicUpdateUseCaseOutPut(repository.update(comic.copy(
-            name = input.name,
-            isPublished = input.isPublished,
-            updatedAt = LocalDateTime.now()
-        )))
+        return ComicUpdateUseCaseOutPut(
+            repository.update(
+                comic.copy(
+                    name = input.name,
+                    isPublished = input.isPublished,
+                    updatedAt = LocalDateTime.now()
+                )
+            )
+        )
     }
 }

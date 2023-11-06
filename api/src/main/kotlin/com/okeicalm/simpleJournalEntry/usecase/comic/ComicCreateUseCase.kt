@@ -1,7 +1,6 @@
 package com.okeicalm.simpleJournalEntry.usecase.comic
 
 import com.okeicalm.simpleJournalEntry.entity.Comic
-import com.okeicalm.simpleJournalEntry.handler.mutation.CreateComicInput
 import com.okeicalm.simpleJournalEntry.repository.ComicRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -14,15 +13,17 @@ interface ComicCreateUseCase {
 }
 
 @Service
-class ComicCreateUseCaseImpl(private val repository: ComicRepository): ComicCreateUseCase {
+class ComicCreateUseCaseImpl(private val repository: ComicRepository) : ComicCreateUseCase {
     @Transactional(readOnly = false)
     override fun call(input: ComicCreateUseCaseInput): ComicCreateUseCaseOutPut {
-        val comic = repository.create(Comic(
-            name = input.name,
-            isPublished = input.isPublished,
-            createdAt = LocalDateTime.now(),
-            updatedAt = LocalDateTime.now()
-        ))
+        val comic = repository.create(
+            Comic(
+                name = input.name,
+                isPublished = input.isPublished,
+                createdAt = LocalDateTime.now(),
+                updatedAt = LocalDateTime.now()
+            )
+        )
         return ComicCreateUseCaseOutPut(comic)
     }
 }

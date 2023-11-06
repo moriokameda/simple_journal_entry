@@ -1,6 +1,5 @@
 package com.okeicalm.simpleJournalEntry.entity
 
-import java.time.LocalDate
 import java.time.LocalDateTime
 
 data class Comic(
