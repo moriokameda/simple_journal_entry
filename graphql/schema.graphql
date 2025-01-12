@@ -3,29 +3,31 @@ schema {
   mutation: Mutation
 }
 
+scalar Datetime
+
 "Directs the executor to include this field or fragment only when the `if` argument is true"
 directive @include(
-    "Included when true."
-    if: Boolean!
-  ) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
+  "Included when true."
+  if: Boolean!
+) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
 
 "Directs the executor to skip this field or fragment when the `if`'argument is true."
 directive @skip(
-    "Skipped when true."
-    if: Boolean!
-  ) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
+  "Skipped when true."
+  if: Boolean!
+) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
 
 "Marks the field, argument, input field or enum value as deprecated"
 directive @deprecated(
-    "The reason for the deprecation"
-    reason: String = "No longer supported"
-  ) on FIELD_DEFINITION | ARGUMENT_DEFINITION | ENUM_VALUE | INPUT_FIELD_DEFINITION
+  "The reason for the deprecation"
+  reason: String = "No longer supported"
+) on FIELD_DEFINITION | ARGUMENT_DEFINITION | ENUM_VALUE | INPUT_FIELD_DEFINITION
 
 "Exposes a URL that specifies the behaviour of this scalar."
 directive @specifiedBy(
-    "The URL that specifies the behaviour of this scalar."
-    url: String!
-  ) on SCALAR
+  "The URL that specifies the behaviour of this scalar."
+  url: String!
+) on SCALAR
 
 type Account {
   code: String!
@@ -51,16 +53,31 @@ type JournalEntry {
   value: Int!
 }
 
+type Comic {
+  id: ID!
+  name: String!
+  isPublished: Boolean!
+  createdAt: Datetime!
+  updatedAt: Datetime!
+}
+
+type DeleteComicPayload {
+  deletedComic: Comic
+}
+
 type Mutation {
   createAccount(input: CreateAccountInput!): Account!
   createJournal(input: CreateJournalInput!): Journal!
+  createComic(input: CreateComicInput!): Comic!
   deleteAccount(input: DeleteAccountInput!): DeleteAccountPayload!
+  deleteComic(input: DeleteComicInput!): DeleteComicPayload!
   updateAccount(input: UpdateAccountInput!): Account!
 }
 
 type Query {
   allAccounts: [Account!]!
   allJournals: [Journal!]!
+  allComics: [Comic!]!
 }
 
 enum AccountElementType {
@@ -92,7 +109,16 @@ input CreateJournalInput {
   incurredOn: Int!
 }
 
+input CreateComicInput {
+  name: String!,
+  isPublished: Boolean!,
+}
+
 input DeleteAccountInput {
+  id: ID!
+}
+
+input DeleteComicInput {
   id: ID!
 }
 
@@ -101,4 +127,10 @@ input UpdateAccountInput {
   elementType: AccountElementType!
   id: ID!
   name: String!
+}
+
+input UpdateComicInput {
+  id: ID!
+  name: String!
+  isPublished: Boolean!
 }

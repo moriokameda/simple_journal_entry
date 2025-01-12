@@ -1,6 +1,7 @@
 import com.expediagroup.graphql.plugin.gradle.graphql
 import org.gradle.kotlin.dsl.flyway
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jooq.meta.jaxb.ForcedType
 
 plugins {
     id("org.springframework.boot") version "2.6.5"
@@ -73,6 +74,14 @@ jooq {
                         name = "org.jooq.meta.mysql.MySQLDatabase"
                         inputSchema = "simple_journal_entry_db"
                         excludes = "flyway_schema_history"
+                        forcedTypes.addAll(
+                            listOf(
+                                ForcedType().apply {
+                                    name = "boolean"
+                                    includeTypes = "(?i:TINYINT\\(1\\))"
+                                }
+                            )
+                        )
                     }
                     generate.apply {
                         isDeprecated = false
